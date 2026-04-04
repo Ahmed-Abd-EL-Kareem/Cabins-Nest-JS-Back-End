@@ -1,0 +1,92 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: Int!
+  fullName: String!
+  email: String!
+  nationalID: String
+  nationality: String
+  avatar: String
+  role: UserRole
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  bookings: Booking!
+}
+
+"""User access level"""
+enum UserRole {
+  CUSTOMER
+  ADMIN
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Booking {
+  id: Int!
+  startDate: DateTime!
+  endDate: DateTime!
+  numNights: Int!
+  numGuests: Int!
+  cabinPrice: Int!
+  extrasPrice: Int!
+  totalPrice: Int!
+  status: BookingStatus!
+  hasBreakfast: Boolean!
+  isPaid: Boolean!
+  observations: String
+  cabin: Cabin!
+  guest: User!
+}
+
+"""Status of booking lifecycle"""
+enum BookingStatus {
+  UNCONFIRMED
+  CHECKED_IN
+  CHECKED_OUT
+}
+
+type Cabin {
+  id: Int!
+  name: String!
+  maxCapacity: Int!
+  regularPrice: Int!
+  discount: Int!
+  description: String!
+  image: String!
+}
+
+type LoginResponseDto {
+  accessToken: String!
+  user: User!
+}
+
+type Query {
+  hello: String!
+  findOneByEmail(email: String!): User!
+  getAllCustomers: [User!]!
+}
+
+type Mutation {
+  login(loginInput: LoginDto!): LoginResponseDto!
+  createUser(userInput: UserDto!): User!
+}
+
+input LoginDto {
+  email: String!
+  password: String!
+}
+
+input UserDto {
+  fullName: String!
+  email: String!
+  nationalID: String!
+  nationality: String!
+  password: String!
+  avatar: String!
+  role: String
+}
