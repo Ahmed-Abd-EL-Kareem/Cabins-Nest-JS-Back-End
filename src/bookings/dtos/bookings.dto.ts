@@ -6,80 +6,81 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-  IsUUID,
-  Max,
   Min,
 } from 'class-validator';
 import { BookingStatus } from '../enums/status.enum';
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 
 @InputType()
 export class BookingDto {
   @Field()
   @IsNotEmpty()
   @IsISO8601()
-  startDate: string;
+  startDate!: string;
 
   @Field()
   @IsNotEmpty()
   @IsISO8601()
-  endDate: string;
+  endDate!: string;
 
-  @Field()
+  @Field(() => Int)
   @IsNotEmpty()
   @IsInt()
-  @Min(2)
-  numNights: number;
+  @Min(1)
+  numNights!: number;
 
-  @Field()
+  @Field(() => Int)
   @IsNotEmpty()
   @IsInt()
-  @Max(10)
-  numGuests: number;
+  @Min(1)
+  numGuests!: number;
 
-  @Field()
-  @IsNotEmpty()
+  // @Field(() => Int)
+  // @IsNotEmpty()
+  // @IsInt()
+  // cabinPrice!: number;
+
+  @Field(() => Int, { nullable: true, defaultValue: 0 })
+  @IsOptional()
   @IsInt()
-  cabinPrice: number;
+  extrasPrice?: number;
 
-  @Field()
-  @IsNotEmpty()
-  @IsInt()
-  extrasPrice: number;
+  // @Field(() => Int)
+  // @IsNotEmpty()
+  // @IsInt()
+  // totalPrice!: number;
 
-  @Field()
-  @IsNotEmpty()
-  @IsInt()
-  totalPrice: number;
-
-  @Field()
-  @IsString()
-  @IsNotEmpty()
+  @Field(() => BookingStatus, {
+    nullable: true,
+    defaultValue: BookingStatus.UNCONFIRMED,
+  })
+  @IsOptional()
   @IsEnum(BookingStatus)
-  status: BookingStatus;
+  status?: BookingStatus;
 
-  @Field()
+  @Field({ nullable: true, defaultValue: false })
   @IsBoolean()
-  @IsNotEmpty()
-  hasBreakfast: boolean;
+  @IsOptional()
+  hasBreakfast?: boolean;
 
-  @Field()
+  @Field({ nullable: true, defaultValue: false })
   @IsBoolean()
-  @IsNotEmpty()
-  isPaid: boolean;
+  @IsOptional()
+  isPaid!: boolean;
 
-  @Field()
+  @Field({ nullable: true })
   @IsOptional()
   @IsString()
   observations?: string;
 
   // Relations
 
-  @Field()
-  @IsUUID()
-  cabinId: string;
+  @Field(() => Int)
+  @IsInt()
+  @IsNotEmpty()
+  cabinId!: number;
 
-  @Field()
-  @IsUUID()
-  guestId: string;
+  @IsOptional()
+  @IsInt()
+  guestId?: number;
 }

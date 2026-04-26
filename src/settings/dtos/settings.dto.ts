@@ -1,29 +1,33 @@
-import { Field, InputType } from '@nestjs/graphql';
+// settings.dto.ts
+import { Field, InputType, Int } from '@nestjs/graphql';
 import { IsInt, IsNotEmpty, Max, Min } from 'class-validator';
 
 @InputType()
 export class SettingsDto {
-  @Field()
-  @IsNotEmpty()
-  @IsInt()
-  @Max(15)
-  maxBookingLength: number;
-
-  @Field()
+  @Field(() => Int)
   @IsNotEmpty()
   @IsInt()
   @Min(1)
-  minBookingLength: number;
+  @Max(90)
+  maxBookingLength!: number;
 
-  @Field()
+  @Field(() => Int)
+  @IsNotEmpty()
+  @IsInt()
+  @Min(1)
+  @Max(30)
+  minBookingLength!: number;
+
+  @Field(() => Int)
   @IsNotEmpty()
   @IsInt()
   @Min(1)
   @Max(10)
-  maxGuestsPerBooking: number;
+  maxGuestsPerBooking!: number;
 
-  @Field()
+  @Field(() => Int)
   @IsNotEmpty()
   @IsInt()
-  breakfastPrice: number;
+  @Min(0)
+  breakfastPrice!: number;
 }

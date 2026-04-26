@@ -2,6 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import {
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -14,34 +15,36 @@ export class CabinDto {
   @IsNotEmpty()
   @MinLength(3)
   @MaxLength(30)
-  name: string;
+  name!: string;
 
   @Field()
   @IsInt()
   @IsNotEmpty()
-  maxCapacity: number;
+  maxCapacity!: number;
 
   @Field()
   @IsInt()
   @IsNotEmpty()
-  regularPrice: number;
+  regularPrice!: number;
 
-  @Field()
+  @Field({
+    defaultValue: 0,
+  })
   @IsInt()
-  @IsNotEmpty()
-  discount: number;
+  @IsOptional()
+  discount!: number;
 
   @Field()
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
   @MaxLength(1024)
-  description: string;
+  description!: string;
 
   @Field()
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
   @MaxLength(2048)
-  image: string;
+  image!: string;
 }

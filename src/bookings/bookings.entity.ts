@@ -3,10 +3,12 @@ import { Cabin } from 'src/cabins/cabins.entity';
 import { User } from 'src/users/users.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { BookingStatus } from './enums/status.enum';
 
@@ -15,37 +17,37 @@ import { BookingStatus } from './enums/status.enum';
 export class Booking {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Field()
   @Index()
   @Column({ type: 'timestamp' })
-  startDate: Date;
+  startDate!: Date;
 
   @Field()
   @Index()
   @Column({ type: 'timestamp' })
-  endDate: Date;
+  endDate!: Date;
 
   @Field(() => Int)
   @Column()
-  numNights: number;
+  numNights!: number;
 
   @Field(() => Int)
   @Column()
-  numGuests: number;
+  numGuests!: number;
 
   @Field(() => Int)
   @Column()
-  cabinPrice: number;
+  cabinPrice!: number;
+
+  @Field(() => Int, { nullable: true })
+  @Column({ nullable: true, default: 0 })
+  extrasPrice?: number;
 
   @Field(() => Int)
   @Column()
-  extrasPrice: number;
-
-  @Field(() => Int)
-  @Column()
-  totalPrice: number;
+  totalPrice!: number;
 
   @Field(() => BookingStatus)
   @Column({
@@ -53,29 +55,35 @@ export class Booking {
     enum: BookingStatus,
     default: BookingStatus.UNCONFIRMED,
   })
-  status: BookingStatus;
+  status!: BookingStatus;
 
   @Field()
   @Column({ default: false })
-  hasBreakfast: boolean;
+  hasBreakfast!: boolean;
 
   @Field()
   @Column({ default: false })
-  isPaid: boolean;
+  isPaid!: boolean;
 
   @Field({ nullable: true })
   @Column({ nullable: true })
   observations?: string;
+  @Field()
+  @CreateDateColumn()
+  createdAt!: Date;
 
+  @Field()
+  @UpdateDateColumn()
+  updatedAt!: Date;
   // Relations
 
   @Field(() => Cabin)
   @Index()
-  @ManyToOne(() => Cabin, (cabin) => cabin.bookings)
-  cabin: Cabin;
+  @ManyToOne(() => Cabin, (cabin) => cabin.bookings, { eager: true })
+  cabin!: Cabin;
 
   @Field(() => User)
   @Index()
-  @ManyToOne(() => User, (user) => user.bookings)
-  guest: User;
+  @ManyToOne(() => User, (user) => user.bookings, { eager: true })
+  guest!: User;
 }

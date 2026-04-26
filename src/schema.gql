@@ -12,7 +12,7 @@ type User {
   role: UserRole
   createdAt: DateTime!
   updatedAt: DateTime!
-  bookings: Booking!
+  bookings: [Booking!]
 }
 
 """User access level"""
@@ -33,12 +33,14 @@ type Booking {
   numNights: Int!
   numGuests: Int!
   cabinPrice: Int!
-  extrasPrice: Int!
+  extrasPrice: Int
   totalPrice: Int!
   status: BookingStatus!
   hasBreakfast: Boolean!
   isPaid: Boolean!
   observations: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
   cabin: Cabin!
   guest: User!
 }
@@ -58,27 +60,127 @@ type Cabin {
   discount: Int!
   description: String!
   image: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  bookings: [Booking!]
+}
+
+type Settings {
+  id: Int!
+  minBookingLength: Int!
+  maxBookingLength: Int!
+  maxGuestsPerBooking: Int!
+  breakfastPrice: Int!
+  updatedAt: DateTime!
 }
 
 type LoginResponseDto {
   accessToken: String!
+  refreshToken: String!
   user: User!
 }
 
 type Query {
   hello: String!
-  findOneByEmail(email: String!): User!
+  getAllCabins: [Cabin!]!
+  getCabinById(id: Float!): Cabin!
+  getAllBookings: [Booking!]!
+  getBookingById(id: Float!): Booking
+  getMyBookings: [Booking!]!
+  getSettings: Settings!
+  findOneByEmail(email: String!): User
   getAllCustomers: [User!]!
 }
 
 type Mutation {
+  createCabin(cabinInput: CabinDto!): Cabin!
+  updateCabin(id: Float!, cabinUpdate: CabinUpdateDto!): Cabin!
+  deleteCabin(id: Float!): Boolean!
+  createBooking(bookingInput: BookingDto!): Booking!
+  updateBooking(id: Float!, bookingUpdate: BookingUpdateDto!): Booking!
+  deleteBooking(id: Float!): Boolean!
+  createSettings(settingsInput: SettingsDto!): Settings!
+  updateSettings(settingsInput: SettingsDto!): Settings!
   login(loginInput: LoginDto!): LoginResponseDto!
+  googleLogin(googleTokenInput: GoogleTokenDto!): LoginResponseDto!
+  refreshToken(refreshTokenInput: RefreshTokenDto!): LoginResponseDto!
+  forgotPassword(forgotPasswordInput: ForgotPasswordDto!): Boolean!
+  resetPassword(resetPasswordInput: ResetPasswordDto!): Boolean!
   createUser(userInput: UserDto!): User!
+  createAdminUser(userInput: UserDto!): User!
+}
+
+input CabinDto {
+  name: String!
+  maxCapacity: Float!
+  regularPrice: Float!
+  discount: Float! = 0
+  description: String!
+  image: String!
+}
+
+input CabinUpdateDto {
+  name: String
+  maxCapacity: Float
+  regularPrice: Float
+  discount: Float = 0
+  description: String
+  image: String
+}
+
+input BookingDto {
+  startDate: String!
+  endDate: String!
+  numNights: Int!
+  numGuests: Int!
+  extrasPrice: Int = 0
+  status: BookingStatus = UNCONFIRMED
+  hasBreakfast: Boolean = false
+  isPaid: Boolean = false
+  observations: String
+  cabinId: Int!
+}
+
+input BookingUpdateDto {
+  startDate: String
+  endDate: String
+  numNights: Int
+  numGuests: Int
+  extrasPrice: Int
+  status: BookingStatus
+  hasBreakfast: Boolean
+  isPaid: Boolean
+  observations: String
+  cabinId: Int
+}
+
+input SettingsDto {
+  maxBookingLength: Int!
+  minBookingLength: Int!
+  maxGuestsPerBooking: Int!
+  breakfastPrice: Int!
 }
 
 input LoginDto {
   email: String!
   password: String!
+}
+
+input GoogleTokenDto {
+  token: String!
+}
+
+input RefreshTokenDto {
+  refreshToken: String!
+}
+
+input ForgotPasswordDto {
+  email: String!
+}
+
+input ResetPasswordDto {
+  token: String!
+  newPassword: String!
 }
 
 input UserDto {

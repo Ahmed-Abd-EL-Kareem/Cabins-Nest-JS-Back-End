@@ -7,10 +7,10 @@ export class LoginDto {
   @IsString()
   @IsNotEmpty()
   @IsEmail()
-  email: string;
+  email!: string;
 
   @Field()
   @IsString()
   @IsNotEmpty()
-  password: string;
+  password!: string;
 }

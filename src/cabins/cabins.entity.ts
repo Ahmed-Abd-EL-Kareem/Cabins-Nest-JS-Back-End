@@ -1,40 +1,56 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Booking } from 'src/bookings/bookings.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @ObjectType()
 @Entity()
 export class Cabin {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Field()
   @Column()
-  name: string;
+  name!: string;
 
   @Field(() => Int)
   @Column()
-  maxCapacity: number;
+  maxCapacity!: number;
 
   @Field(() => Int)
   @Column()
-  regularPrice: number;
+  regularPrice!: number;
 
   @Field(() => Int)
   @Column({
     default: 0,
   })
-  discount: number;
+  discount!: number;
 
   @Field()
   @Column()
-  description: string;
+  description!: string;
 
   @Field()
   @Column()
-  image: string;
+  image!: string;
 
+  @Field()
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @Field()
+  @UpdateDateColumn()
+  updatedAt!: Date;
+
+  @Field(() => [Booking], { nullable: true })
   @OneToMany(() => Booking, (booking) => booking.cabin)
-  bookings: Booking[];
+  bookings?: Booking[];
 }

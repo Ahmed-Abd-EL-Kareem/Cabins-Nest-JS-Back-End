@@ -18,17 +18,17 @@ import { Booking } from 'src/bookings/bookings.entity';
 export class User {
   @Field(() => Int)
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Field()
   @Column()
-  fullName: string;
+  fullName!: string;
 
   @Field()
   @Column({
     unique: true,
   })
-  email: string;
+  email!: string;
 
   @Column({ nullable: true })
   password?: string;
@@ -46,7 +46,7 @@ export class User {
   avatar?: string;
 
   @Column({ nullable: true, unique: true })
-  googleId: string;
+  googleId?: string;
 
   @Field(() => UserRole, { nullable: true })
   @Column({
@@ -58,13 +58,19 @@ export class User {
 
   @Field()
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @Field()
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 
-  @Field(() => Booking)
+  @Field(() => [Booking], { nullable: true })
   @OneToMany(() => Booking, (booking) => booking.guest)
   bookings?: Booking[];
+
+  @Column({ nullable: true })
+  resetPasswordToken?: string;
+
+  @Column({ type: 'timestamp', nullable: true })
+  resetPasswordExpires?: Date;
 }

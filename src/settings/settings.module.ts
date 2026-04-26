@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { SettingsService } from './settings.service';
+import { SettingsService } from './provider/settings.service';
 import { SettingsResolver } from './settings.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Settings } from './settings.entity';

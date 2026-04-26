@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsStrongPassword,
   Matches,
   MaxLength,
   MinLength,
@@ -18,13 +19,13 @@ export class UserDto {
   @IsNotEmpty()
   @MinLength(3)
   @MaxLength(36)
-  fullName: string;
+  fullName!: string;
 
   @Field()
   @IsString()
   @IsNotEmpty()
   @IsEmail()
-  email: string;
+  email!: string;
 
   @Field()
   @IsString()
@@ -41,10 +42,11 @@ export class UserDto {
   @IsNotEmpty()
   @MinLength(8)
   @MaxLength(1000)
+  @IsStrongPassword()
   @Matches(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/, {
     message: 'Password too weak',
   })
-  password: string;
+  password!: string;
 
   @Field()
   @IsString()
