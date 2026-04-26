@@ -41,8 +41,8 @@ export class User {
   @Column({ nullable: true })
   nationality?: string;
 
-  @Field({ nullable: true })
-  @Column({ nullable: true })
+  @Field({ nullable: true, defaultValue: 'https://pin.it/4YmME9yCV' })
+  @Column({ nullable: true, default: 'https://pin.it/4YmME9yCV' })
   avatar?: string;
 
   @Column({ nullable: true, unique: true })
