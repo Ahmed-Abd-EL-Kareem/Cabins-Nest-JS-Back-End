@@ -48,7 +48,7 @@ export class UserDto {
   })
   password!: string;
 
-  @Field({ nullable: true })
+  @Field({ nullable: true, defaultValue: 'https://pin.it/4YmME9yCV' })
   @IsOptional()
   @IsString()
   @MaxLength(2048)
