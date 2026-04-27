@@ -27,14 +27,14 @@ export class UserDto {
   @IsEmail()
   email!: string;
 
-  @Field()
-  @IsString()
+  @Field({ nullable: true })
   @IsOptional()
+  @IsString()
   nationalID?: string;
 
-  @Field()
-  @IsString()
+  @Field({ nullable: true })
   @IsOptional()
+  @IsString()
   nationality?: string;
 
   @Field()
@@ -48,9 +48,9 @@ export class UserDto {
   })
   password!: string;
 
-  @Field()
-  @IsString()
+  @Field({ nullable: true })
   @IsOptional()
+  @IsString()
   @MaxLength(2048)
   avatar?: string;
 
