@@ -10,7 +10,12 @@ async function bootstrap() {
       transform: true,
     }),
   );
-
+  app.enableCors([
+    process.env.DEV_FRONTEND_DASHBOARD,
+    process.env.PROD_FRONTEND_DASHBOARD,
+    process.env.DEV_FRONTEND_MAINSITE,
+    process.env.PROD_FRONTEND_MAINSITE,
+  ]);
   await app.listen(process.env.PORT ?? 3000).catch((err) => {
     console.log(err);
   });
