@@ -4,13 +4,17 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class GqlGoogleAuthGuard extends AuthGuard('google') {
-  getRequest(context: ExecutionContext): Request {
+  getRequest(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
-    const { req } = ctx.getContext<{ req: Request }>();
-    const args = ctx.getArgs<{ googleTokenInput: string }>();
+    const req = ctx.getContext<{ req: any }>().req;
+    const args = ctx.getArgs<{ googleTokenInput: { token: string } }>();
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    (req as any).body = args.googleTokenInput ?? args;
+    // passport-local reads usernameField and passwordField from body
+    // both set to 'token' so passport-local passes the token to validate()
+    req.body = {
+      token: args.googleTokenInput?.token,
+    };
+
     return req;
   }
 }
