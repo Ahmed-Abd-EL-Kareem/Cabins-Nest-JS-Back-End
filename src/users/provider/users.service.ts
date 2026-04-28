@@ -3,6 +3,7 @@ import {
   forwardRef,
   Inject,
   Injectable,
+  NotFoundException,
   Param,
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
@@ -12,6 +13,7 @@ import { UserRole } from '../enums/user-role.enum';
 import { UserDto } from '../dtos/user.dto';
 import { HashingProvider } from 'src/auth/provider/hashing.provider';
 import { GoogleUserPayload } from 'src/auth/interfaces/google-user-payload.interface';
+import { UpdateUserDto } from '../dtos/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -99,7 +101,30 @@ export class UsersService {
       throw new BadRequestException(error);
     }
   }
+  async updateUser(
+    userId: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<User> {
+    const user = await this.userRepository.findOneBy({ id: userId });
+    if (!user) {
+      throw new NotFoundException(`User with id ${userId} not found`);
+    }
 
+    // Check if new email is already taken by another user
+    if (updateUserDto.email && updateUserDto.email !== user.email) {
+      const existing = await this.userRepository.findOneBy({
+        email: updateUserDto.email,
+      });
+      if (existing) {
+        throw new BadRequestException('Email is already in use');
+      }
+    }
+
+    await this.userRepository.update(userId, updateUserDto);
+
+    const updated = await this.userRepository.findOneBy({ id: userId });
+    return updated as User;
+  }
   async findOneByEmail(@Param() email: string): Promise<User | null> {
     const user = await this.userRepository.findOneBy({ email });
     return user;
