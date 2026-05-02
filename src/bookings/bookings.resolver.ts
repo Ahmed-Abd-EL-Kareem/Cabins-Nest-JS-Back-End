@@ -71,9 +71,8 @@ export class BookingsResolver {
   @Mutation(() => Booking)
   async createBooking(
     @Args('bookingInput') bookingDto: BookingDto,
-    @CurrentUser() user: AuthenticatedUser,
   ): Promise<Booking> {
-    return this.bookingsService.createBooking(bookingDto, user.userId);
+    return this.bookingsService.createBooking(bookingDto);
   }
 
   // 🔒 admin only — update any booking

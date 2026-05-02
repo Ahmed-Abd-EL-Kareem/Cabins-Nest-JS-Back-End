@@ -149,25 +149,28 @@ export class BookingsService {
       totalPages: Math.ceil(total / limit),
     };
   }
-  async createBooking(
-    bookingDto: BookingDto,
-    guestId: number,
-  ): Promise<Booking> {
+
+  async createBooking(bookingDto: BookingDto): Promise<Booking> {
     const cabin = await this.cabinsService.getCabinById(bookingDto.cabinId);
     if (!cabin) throw new NotFoundException('Cabin not found');
     if (cabin.maxCapacity < bookingDto.numGuests)
       throw new BadRequestException('Number of guests exceeds cabin capacity');
+
     const cabinPrice = cabin.regularPrice;
     const extrasPrice = bookingDto.extrasPrice ?? 0;
     const totalPrice = cabinPrice + extrasPrice;
+
+    // guestId comes directly from the frontend DTO
+    const { guestId, cabinId, ...rest } = bookingDto;
+
     return await this.bookingRepository.save({
-      ...bookingDto,
+      ...rest,
       startDate: new Date(bookingDto.startDate),
       endDate: new Date(bookingDto.endDate),
       cabinPrice,
       extrasPrice,
       totalPrice,
-      cabin,
+      cabin: { id: cabinId },
       guest: { id: guestId },
     });
   }

@@ -80,7 +80,8 @@ export class BookingDto {
   @IsNotEmpty()
   cabinId!: number;
 
-  @IsOptional()
+  @Field(() => Int)
   @IsInt()
+  @IsNotEmpty()
   guestId?: number;
 }
