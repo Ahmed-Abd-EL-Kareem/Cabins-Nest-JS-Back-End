@@ -9,6 +9,13 @@ import { Roles } from 'src/common/decorators/roles.decorator';
 import { UserRole } from 'src/users/enums/user-role.enum';
 import { type AuthenticatedUser } from 'src/auth/interfaces/jwt.interface';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import {
+  BookingFilterArgs,
+  BookingSearchArgs,
+  BookingSortArgs,
+  PaginatedBookings,
+} from './dtos/booking-query.args';
+import { PaginationArgs } from 'src/common/dtos/pagination.args';
 
 @Resolver()
 export class BookingsResolver {
@@ -17,11 +24,21 @@ export class BookingsResolver {
   // ─── Queries ─────────────────────────────────────────────────────────────────
 
   // 🔒 admin only — see all bookings
-  @Query(() => [Booking])
+  @Query(() => PaginatedBookings)
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
-  async getAllBookings(): Promise<Booking[]> {
-    return this.bookingsService.getAllBookings();
+  async getAllBookings(
+    @Args('filter', { nullable: true }) filter?: BookingFilterArgs,
+    @Args('search', { nullable: true }) search?: BookingSearchArgs,
+    @Args('sort', { nullable: true }) sort?: BookingSortArgs,
+    @Args('pagination', { nullable: true }) pagination?: PaginationArgs,
+  ): Promise<PaginatedBookings> {
+    return this.bookingsService.getAllBookings(
+      filter,
+      search,
+      sort,
+      pagination,
+    );
   }
 
   // 🔒 admin only — get any booking by id
@@ -33,11 +50,19 @@ export class BookingsResolver {
   }
 
   // 🔒 any logged-in user — get their own bookings
-  @Query(() => [Booking])
+  @Query(() => PaginatedBookings)
   async getMyBookings(
     @CurrentUser() user: AuthenticatedUser,
-  ): Promise<Booking[]> {
-    return this.bookingsService.getUserBookings(user.userId);
+    @Args('filter', { nullable: true }) filter?: BookingFilterArgs,
+    @Args('sort', { nullable: true }) sort?: BookingSortArgs,
+    @Args('pagination', { nullable: true }) pagination?: PaginationArgs,
+  ): Promise<PaginatedBookings> {
+    return this.bookingsService.getUserBookings(
+      user.userId,
+      filter,
+      sort,
+      pagination,
+    );
   }
 
   // ─── Mutations ───────────────────────────────────────────────────────────────

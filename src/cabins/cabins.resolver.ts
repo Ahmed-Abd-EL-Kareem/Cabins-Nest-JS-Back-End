@@ -8,6 +8,13 @@ import { UserRole } from 'src/users/enums/user-role.enum';
 import { Public } from 'src/common/public';
 import { RolesGuard } from 'src/common/guards/role.guard';
 import { UseGuards } from '@nestjs/common';
+import {
+  CabinFilterArgs,
+  CabinSearchArgs,
+  CabinSortArgs,
+  PaginatedCabin,
+} from './dtos/cabin-query.args';
+import { PaginationArgs } from 'src/common/dtos/pagination.args';
 
 @Resolver()
 export class CabinsResolver {
@@ -42,9 +49,19 @@ export class CabinsResolver {
   }
 
   @Public()
-  @Query(() => [Cabin])
-  async getAllCabins(): Promise<Cabin[]> {
-    return await this.cabinsService.getAllCabins();
+  @Query(() => PaginatedCabin)
+  async getAllCabins(
+    @Args('filter', { nullable: true }) filter?: CabinFilterArgs,
+    @Args('search', { nullable: true }) search?: CabinSearchArgs,
+    @Args('sort', { nullable: true }) sort?: CabinSortArgs,
+    @Args('pagination', { nullable: true }) pagination?: PaginationArgs,
+  ): Promise<PaginatedCabin> {
+    return await this.cabinsService.getAllCabins(
+      filter,
+      search,
+      sort,
+      pagination,
+    );
   }
 
   @Public()

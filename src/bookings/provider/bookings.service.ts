@@ -9,6 +9,13 @@ import { Repository } from 'typeorm';
 import { BookingDto } from '../dtos/bookings.dto';
 import { CabinsService } from 'src/cabins/provider/cabins.service';
 import { BookingUpdateDto } from '../dtos/updateBooking.dto';
+import {
+  BookingFilterArgs,
+  BookingSearchArgs,
+  BookingSortArgs,
+  PaginatedBookings,
+} from '../dtos/booking-query.args';
+import { PaginationArgs } from 'src/common/dtos/pagination.args';
 
 @Injectable()
 export class BookingsService {
@@ -23,16 +30,124 @@ export class BookingsService {
      */
     private readonly cabinsService: CabinsService,
   ) {}
-  async getAllBookings(): Promise<Booking[]> {
-    return await this.bookingRepository.find();
+  async getAllBookings(
+    filter?: BookingFilterArgs,
+    search?: BookingSearchArgs,
+    sort?: BookingSortArgs,
+    pagination?: PaginationArgs,
+  ): Promise<PaginatedBookings> {
+    const page = pagination?.page ?? 1;
+    const limit = pagination?.limit ?? 10;
+    const skip = (page - 1) * limit;
+    const bookings = this.bookingRepository
+      .createQueryBuilder('booking')
+      .leftJoinAndSelect('booking.cabin', 'cabin')
+      .leftJoinAndSelect('booking.guest', 'guest');
+
+    if (filter?.status) {
+      bookings.andWhere('booking.status = :status', { status: filter.status });
+    }
+    if (filter?.isPaid) {
+      bookings.andWhere('booking.isPaid = :isPaid', { isPaid: filter.isPaid });
+    }
+    if (filter?.hasBreakfast !== undefined) {
+      bookings.andWhere('booking.hasBreakfast = :hasBreakfast', {
+        hasBreakfast: filter.hasBreakfast,
+      });
+    }
+    if (filter?.cabinId) {
+      bookings.andWhere('cabin.id = :cabinId', { cabinId: filter.cabinId });
+    }
+    if (filter?.guestId) {
+      bookings.andWhere('guest.id = :guestId', { guestId: filter.guestId });
+    }
+    if (filter?.startDateFrom) {
+      bookings.andWhere('booking.startDate >= :startDateFrom', {
+        startDateFrom: new Date(filter.startDateFrom),
+      });
+    }
+    if (filter?.startDateTo) {
+      bookings.andWhere('booking.startDate <= :startDateTo', {
+        startDateTo: new Date(filter.startDateTo),
+      });
+    }
+
+    if (search?.guestName) {
+      bookings.andWhere('LOWER(guest.fullName) LIKE LOWER(:guestName)', {
+        guestName: `%${search.guestName}%`,
+      });
+    }
+    if (search?.guestEmail) {
+      bookings.andWhere('LOWER(guest.email) LIKE LOWER(:guestEmail)', {
+        guestEmail: `%${search.guestEmail}%`,
+      });
+    }
+    if (search?.cabinName) {
+      bookings.andWhere('LOWER(cabin.name) LIKE LOWER(:cabinName)', {
+        cabinName: `%${search.cabinName}%`,
+      });
+    }
+
+    const sortField = sort?.field ?? 'createdAt';
+    const sortOrder = sort?.order ?? 'DESC';
+    bookings.orderBy(`booking.${sortField}`, sortOrder);
+
+    bookings.skip(skip).take(limit);
+    const [data, total] = await bookings.getManyAndCount();
+    return {
+      data,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
   async getBookingById(id: number): Promise<Booking | null> {
     return await this.bookingRepository.findOneBy({ id });
   }
-  async getUserBookings(userId: number): Promise<Booking[]> {
-    return await this.bookingRepository.find({
-      where: { guest: { id: userId } },
-    });
+  async getUserBookings(
+    userId: number,
+    filter?: BookingFilterArgs,
+    sort?: BookingSortArgs,
+    pagination?: PaginationArgs,
+  ): Promise<PaginatedBookings> {
+    const page = pagination?.page ?? 1;
+    const limit = pagination?.limit ?? 10;
+    const skip = (page - 1) * limit;
+
+    const bookings = this.bookingRepository
+      .createQueryBuilder('booking')
+      .leftJoinAndSelect('booking.cabin', 'cabin')
+      .leftJoinAndSelect('booking.guest', 'guest')
+      .where('guest.id = :userId', { userId });
+
+    if (filter?.status) {
+      bookings.andWhere('booking.status = :status', { status: filter.status });
+    }
+    if (filter?.isPaid !== undefined) {
+      bookings.andWhere('booking.isPaid = :isPaid', { isPaid: filter.isPaid });
+    }
+    if (filter?.hasBreakfast !== undefined) {
+      bookings.andWhere('booking.hasBreakfast = :hasBreakfast', {
+        hasBreakfast: filter.hasBreakfast,
+      });
+    }
+
+    const sortField = sort?.field ?? 'startDate';
+    const sortOrder = sort?.order ?? 'DESC';
+    bookings.orderBy(`booking.${sortField}`, sortOrder);
+
+    bookings.skip(skip).take(limit);
+
+    const [data, total] = await bookings.getManyAndCount();
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
   async createBooking(
     bookingDto: BookingDto,

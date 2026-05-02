@@ -65,6 +65,22 @@ type Cabin {
   bookings: [Booking!]
 }
 
+type PaginatedCabin {
+  data: [Cabin!]!
+  total: Int!
+  page: Int!
+  limit: Int!
+  totalPages: Int!
+}
+
+type PaginatedBookings {
+  data: [Booking!]!
+  total: Int!
+  page: Int!
+  limit: Int!
+  totalPages: Int!
+}
+
 type Settings {
   id: Int!
   minBookingLength: Int!
@@ -82,14 +98,82 @@ type LoginResponseDto {
 
 type Query {
   hello: String!
-  getAllCabins: [Cabin!]!
+  getAllCabins(filter: CabinFilterArgs, search: CabinSearchArgs, sort: CabinSortArgs, pagination: PaginationArgs): PaginatedCabin!
   getCabinById(id: Float!): Cabin!
-  getAllBookings: [Booking!]!
+  getAllBookings(filter: BookingFilterArgs, search: BookingSearchArgs, sort: BookingSortArgs, pagination: PaginationArgs): PaginatedBookings!
   getBookingById(id: Float!): Booking
-  getMyBookings: [Booking!]!
+  getMyBookings(filter: BookingFilterArgs, sort: BookingSortArgs, pagination: PaginationArgs): PaginatedBookings!
   getSettings: Settings!
   findOneByEmail(email: String!): User
   getAllCustomers: [User!]!
+}
+
+input CabinFilterArgs {
+  minCapacity: Int
+  maxCapacity: Int
+  minPrice: Int
+  maxPrice: Int
+  hasDiscount: Boolean
+}
+
+input CabinSearchArgs {
+  name: String
+  description: String
+}
+
+input CabinSortArgs {
+  field: CabinSortField = CREATED_AT
+  order: SortOrder = ASC
+}
+
+"""Cabin sort field"""
+enum CabinSortField {
+  NAME
+  PRICE
+  CAPACITY
+  CREATED_AT
+}
+
+"""Sort order"""
+enum SortOrder {
+  ASC
+  DESC
+}
+
+input PaginationArgs {
+  page: Int = 1
+  limit: Int = 10
+}
+
+input BookingFilterArgs {
+  status: BookingStatus
+  startDateFrom: String
+  startDateTo: String
+  cabinId: Int
+  guestId: Int
+  isPaid: Boolean
+  hasBreakfast: Boolean
+}
+
+input BookingSearchArgs {
+  guestName: String
+  guestEmail: String
+  cabinName: String
+}
+
+input BookingSortArgs {
+  field: BookingSortField = CREATED_AT
+  order: SortOrder = DESC
+}
+
+"""Booking sort field"""
+enum BookingSortField {
+  START_DATE
+  END_DATE
+  TOTAL_PRICE
+  CREATED_AT
+  NUM_GUESTS
+  NUM_NIGHTS
 }
 
 type Mutation {
@@ -108,6 +192,7 @@ type Mutation {
   resetPassword(resetPasswordInput: ResetPasswordDto!): Boolean!
   createUser(userInput: UserDto!): User!
   createAdminUser(userInput: UserDto!): User!
+  updateMyProfile(updateUserInput: UpdateUserDto!): User!
 }
 
 input CabinDto {
@@ -186,9 +271,17 @@ input ResetPasswordDto {
 input UserDto {
   fullName: String!
   email: String!
-  nationalID: String!
-  nationality: String!
+  nationalID: String
+  nationality: String
   password: String!
-  avatar: String!
+  avatar: String = "https://pin.it/4YmME9yCV"
   role: String
+}
+
+input UpdateUserDto {
+  fullName: String
+  email: String
+  nationalID: String
+  nationality: String
+  avatar: String
 }
