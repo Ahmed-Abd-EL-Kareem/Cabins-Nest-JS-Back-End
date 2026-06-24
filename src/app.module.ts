@@ -51,7 +51,7 @@ import { RolesGuard } from './common/guards/role.guard';
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
       playground: false,
       introspection: true,
-      autoSchemaFile: join(process.cwd(), './schema.gql'),
+      autoSchemaFile: join(process.cwd(), 'schema.gql'),
       formatError: (formattedError: GraphQLFormattedError, error: unknown) => {
         // 1. Create a safe interface for the NestJS error structure
         interface NestJsError {
