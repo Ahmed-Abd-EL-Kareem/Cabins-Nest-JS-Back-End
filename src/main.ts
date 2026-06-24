@@ -16,11 +16,11 @@ async function bootstrap() {
     process.env.DEV_FRONTEND_MAINSITE,
     process.env.PROD_FRONTEND_MAINSITE,
   ]);
-    if (!process.env.VERCEL) {
-  await app.listen(process.env.PORT ?? 3000).catch((err) => {
-    console.log(err);
-  });
-  console.log(`Application is running on: ${await app.getUrl()}`);
-}
+  if (!process.env.VERCEL) {
+    await app.listen(process.env.PORT ?? 3000).catch((err) => {
+      console.log(err);
+    });
+    console.log(`Application is running on: ${await app.getUrl()}`);
+  }
 }
 bootstrap();
