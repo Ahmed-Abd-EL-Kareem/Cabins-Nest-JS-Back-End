@@ -15,7 +15,6 @@ import { BookingsModule } from './bookings/bookings.module';
 import { SettingsModule } from './settings/settings.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { join } from 'path';
 import databaseConfig from './config/database.config';
 import { GraphQLFormattedError } from 'graphql';
 import { GqlJwtAuthGuard } from './auth/guards/gql-jwt-auth.guard';
