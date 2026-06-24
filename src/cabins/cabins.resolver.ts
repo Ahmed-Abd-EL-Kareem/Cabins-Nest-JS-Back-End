@@ -3,10 +3,10 @@ import { CabinsService } from './provider/cabins.service';
 import { CabinDto } from './dtos/cabin.dto';
 import { Cabin } from './cabins.entity';
 import { CabinUpdateDto } from './dtos/cabinUpdate.dto';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { UserRole } from 'src/users/enums/user-role.enum';
-import { Public } from 'src/common/public';
-import { RolesGuard } from 'src/common/guards/role.guard';
+import { Roles } from '../common/decorators/roles.decorator';
+import { UserRole } from '../users/enums/user-role.enum';
+import { Public } from '../common/public';
+import { RolesGuard } from '../common/guards/role.guard';
 import { UseGuards } from '@nestjs/common';
 import {
   CabinFilterArgs,
@@ -14,7 +14,7 @@ import {
   CabinSortArgs,
   PaginatedCabin,
 } from './dtos/cabin-query.args';
-import { PaginationArgs } from 'src/common/dtos/pagination.args';
+import { PaginationArgs } from '../common/dtos/pagination.args';
 
 @Resolver()
 export class CabinsResolver {

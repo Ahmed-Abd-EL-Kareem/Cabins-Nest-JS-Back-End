@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { UserRole } from './enums/user-role.enum';
-import { Booking } from 'src/bookings/bookings.entity';
+import { Booking } from '../bookings/bookings.entity';
 
 // registerEnumType(UserRole, {
 //   name: 'UserRole',

@@ -5,11 +5,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from 'src/users/provider/users.service';
+import { UsersService } from '../../users/provider/users.service';
 import { LoginDto } from '../dtos/login.dto';
 import { LoginResponseDto } from '../dtos/login-response.dto';
 import { HashingProvider } from './hashing.provider';
-import { User } from 'src/users/users.entity';
+import { User } from '../../users/users.entity';
 import { GoogleUserPayload } from '../interfaces/google-user-payload.interface';
 import * as crypto from 'crypto';
 import { MailService } from './mail.service';

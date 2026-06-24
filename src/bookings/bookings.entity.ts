@@ -1,6 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Cabin } from 'src/cabins/cabins.entity';
-import { User } from 'src/users/users.entity';
+import { Cabin } from '../cabins/cabins.entity';
+import { User } from '../users/users.entity';
 import {
   Column,
   CreateDateColumn,

@@ -11,8 +11,8 @@ import { User } from '../users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRole } from '../enums/user-role.enum';
 import { UserDto } from '../dtos/user.dto';
-import { HashingProvider } from 'src/auth/provider/hashing.provider';
-import { GoogleUserPayload } from 'src/auth/interfaces/google-user-payload.interface';
+import { HashingProvider } from '../../auth/provider/hashing.provider';
+import { GoogleUserPayload } from '../../auth/interfaces/google-user-payload.interface';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 
 @Injectable()

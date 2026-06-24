@@ -6,12 +6,12 @@ import { LoginResponseDto } from './dtos/login-response.dto';
 import { AuthService } from './provider/auth.service';
 import { GqlGoogleAuthGuard } from './guards/gql-google-auth.guard';
 import { GoogleTokenDto } from './dtos/google-token.dto';
-import { User } from 'src/users/users.entity';
+import { User } from '../users/users.entity';
 import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 import { ResetPasswordDto } from './dtos/reset-passord.dto';
 import { GqlJwtRefreshGuard } from './guards/gql-jwt-refresh.guard';
 import { RefreshTokenDto } from './dtos/refresh-token.dto';
-import { Public } from 'src/common/public';
+import { Public } from '../common/public';
 import { AuthenticatedUser } from './interfaces/jwt.interface';
 
 @Resolver()

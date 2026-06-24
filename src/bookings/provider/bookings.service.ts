@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Booking } from '../bookings.entity';
 import { Repository } from 'typeorm';
 import { BookingDto } from '../dtos/bookings.dto';
-import { CabinsService } from 'src/cabins/provider/cabins.service';
+import { CabinsService } from '../../cabins/provider/cabins.service';
 import { BookingUpdateDto } from '../dtos/updateBooking.dto';
 import {
   BookingFilterArgs,
@@ -15,7 +15,7 @@ import {
   BookingSortArgs,
   PaginatedBookings,
 } from '../dtos/booking-query.args';
-import { PaginationArgs } from 'src/common/dtos/pagination.args';
+import { PaginationArgs } from '../../common/dtos/pagination.args';
 
 @Injectable()
 export class BookingsService {

@@ -6,10 +6,10 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-import { UserRole } from 'src/users/enums/user-role.enum';
+import { UserRole } from '../../users/enums/user-role.enum';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { User } from 'src/users/users.entity';
+import { User } from '../../users/users.entity';
 
 @Injectable()
 export class RolesGuard implements CanActivate {

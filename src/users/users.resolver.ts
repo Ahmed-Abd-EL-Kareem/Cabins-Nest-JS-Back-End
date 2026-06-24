@@ -3,14 +3,14 @@ import { UserDto } from './dtos/user.dto';
 import { UsersService } from './provider/users.service';
 import { User } from './users.entity';
 import { UseGuards } from '@nestjs/common';
-import { Public } from 'src/common/public';
-import { RolesGuard } from 'src/common/guards/role.guard';
-import { Roles } from 'src/common/decorators/roles.decorator';
+import { Public } from '../common/public';
+import { RolesGuard } from '../common/guards/role.guard';
+import { Roles } from '../common/decorators/roles.decorator';
 import { UserRole } from './enums/user-role.enum';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
-import { type AuthenticatedUser } from 'src/auth/interfaces/jwt.interface';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
+import { type AuthenticatedUser } from '../auth/interfaces/jwt.interface';
 import { UpdateUserDto } from './dtos/update-user.dto';
-// import { Public } from 'src/common/public';
+// import { Public } from '../common/public';
 
 @Resolver()
 export class UsersResolver {

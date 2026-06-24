@@ -10,7 +10,7 @@ import {
   CabinSortArgs,
   PaginatedCabin,
 } from '../dtos/cabin-query.args';
-import { PaginationArgs } from 'src/common/dtos/pagination.args';
+import { PaginationArgs } from '../../common/dtos/pagination.args';
 
 @Injectable()
 export class CabinsService {

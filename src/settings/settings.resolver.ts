@@ -2,9 +2,9 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { SettingsService } from './provider/settings.service';
 import { UseGuards } from '@nestjs/common';
 import { Settings } from './settings.entity';
-import { RolesGuard } from 'src/common/guards/role.guard';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { UserRole } from 'src/users/enums/user-role.enum';
+import { RolesGuard } from '../common/guards/role.guard';
+import { Roles } from '../common/decorators/roles.decorator';
+import { UserRole } from '../users/enums/user-role.enum';
 import { SettingsDto } from './dtos/settings.dto';
 
 @Resolver()

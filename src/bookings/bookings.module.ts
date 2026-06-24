@@ -3,7 +3,7 @@ import { BookingsService } from './provider/bookings.service';
 import { BookingsResolver } from './bookings.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Booking } from './bookings.entity';
-import { CabinsModule } from 'src/cabins/cabins.module';
+import { CabinsModule } from '../cabins/cabins.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Booking]), CabinsModule],

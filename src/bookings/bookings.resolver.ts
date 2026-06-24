@@ -4,18 +4,18 @@ import { BookingsService } from './provider/bookings.service';
 import { BookingDto } from './dtos/bookings.dto';
 import { BookingUpdateDto } from './dtos/updateBooking.dto';
 import { UseGuards } from '@nestjs/common';
-import { RolesGuard } from 'src/common/guards/role.guard';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { UserRole } from 'src/users/enums/user-role.enum';
-import { type AuthenticatedUser } from 'src/auth/interfaces/jwt.interface';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { RolesGuard } from '../common/guards/role.guard';
+import { Roles } from '../common/decorators/roles.decorator';
+import { UserRole } from '../users/enums/user-role.enum';
+import { type AuthenticatedUser } from '../auth/interfaces/jwt.interface';
+import { CurrentUser } from '../common/decorators/current-user.decorator';
 import {
   BookingFilterArgs,
   BookingSearchArgs,
   BookingSortArgs,
   PaginatedBookings,
 } from './dtos/booking-query.args';
-import { PaginationArgs } from 'src/common/dtos/pagination.args';
+import { PaginationArgs } from '../common/dtos/pagination.args';
 
 @Resolver()
 export class BookingsResolver {
