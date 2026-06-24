@@ -6,7 +6,7 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import { IsOptional, IsString } from 'class-validator';
-import { SortOrder } from 'src/common/enums/sort-order.enum';
+import { SortOrder } from '../../common/enums/sort-order.enum';
 import { Cabin } from '../cabins.entity';
 
 @InputType()

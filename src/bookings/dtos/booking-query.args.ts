@@ -7,7 +7,7 @@ import {
 } from '@nestjs/graphql';
 import { BookingStatus } from '../enums/status.enum';
 import { IsEnum, IsISO8601, IsOptional, IsString } from 'class-validator';
-import { SortOrder } from 'src/common/enums/sort-order.enum';
+import { SortOrder } from '../../common/enums/sort-order.enum';
 import { Booking } from '../bookings.entity';
 
 @InputType()
