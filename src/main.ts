@@ -17,6 +17,7 @@ async function bootstrap() {
 
     app.enableCors({
       origin: [
+        "https://the-wild-oasis-wine.vercel.app",
         process.env.DEV_FRONTEND_DASHBOARD,
         process.env.PROD_FRONTEND_DASHBOARD,
         process.env.DEV_FRONTEND_MAINSITE,
