@@ -1,19 +1,13 @@
-import serverlessExpress from '@vendia/serverless-express';
 import bootstrap from '../src/main';
 
-let cachedServer;
+let app;
 
-async function handler(req, res) {
-  if (!cachedServer) {
-    const app = await bootstrap();
-    const expressApp = app.getHttpAdapter().getInstance();
-
-    cachedServer = serverlessExpress({
-      app: expressApp,
-    });
+export default async function handler(req: any, res: any) {
+  if (!app) {
+    app = await bootstrap();
   }
 
-  return cachedServer(req, res);
-}
+  const expressApp = app.getHttpAdapter().getInstance();
 
-export default handler;
+  return expressApp(req, res);
+}
